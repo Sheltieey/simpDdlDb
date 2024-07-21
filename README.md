@@ -1,5 +1,5 @@
 # SimpDdlDb
-给予映射文件的数据库DDL操作脚本工具
+基于映射文件的数据库DDL操作脚本工具
 
 ## 工具介绍
 我开发这个工具是为了解决PHP语言小团队开发过程中，对数据表DDL操作过多细碎又在发布的时候容易忘记。比如将半个月前测试完的分支发布到生产的时候会忘了具体是哪个字段的变更情况，这很不效率。在本工具的支持下可以如下简单操作：
@@ -38,7 +38,7 @@ use sheltie\SimpleManageDb\SimpleManageDb;
 $SimpleDDL= SimpleManageDb::getInstance(new PDO(PDO_DSN, PDO_USER, PDO_PASS));
 $SimpleDDL->run($mode,$specifyDir);
 ```
-### 使用说明
+## 使用说明
 - 脚本文件接收三个参数
     - mode：操作指令，目前支持 generate和update
         - generate: 生成配置数据库内的所有数据表的映射文件。默认生成位置在脚本文件同级的dbMap目录下。
