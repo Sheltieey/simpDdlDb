@@ -1,0 +1,23 @@
+{
+  "name": "sheltie/simpDdlDb",
+  "description": "Make it easy to manage data tables",
+  "minimum-stability": "stable",
+  "license": "Apache-2.0",
+  "version": "1.0.0",
+  "type": "library",
+  "authors": [
+    {
+      "name": "sheltie",
+      "email": "sheltie2024@163.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.2.5",
+    "ext-pdo": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "sheltie\\SimpleManageDb\\":"src/"
+    }
+  }
+}
