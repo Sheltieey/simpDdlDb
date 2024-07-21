@@ -1,7 +1,7 @@
 {
   "name": "sheltie/simp-ddl-db",
   "description": "Make it easy to manage data tables",
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "license": "Apache-2.0",
   "version": "1.0.0",
   "type": "library",
