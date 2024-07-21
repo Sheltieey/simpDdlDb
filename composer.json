@@ -1,5 +1,5 @@
 {
-  "name": "sheltie/simpDdlDb",
+  "name": "sheltie/simp-ddl-db",
   "description": "Make it easy to manage data tables",
   "minimum-stability": "stable",
   "license": "Apache-2.0",
