@@ -21,11 +21,11 @@ class ComparisonColumn extends Common
             if(isset($columnStruct['key']) && $columnStruct['key'] == 'PRI') continue;
 
             if (empty($columnStruct["field"])) {
-                $this->outputError($tableName . '表文件内column内第' . $k . '数组内field定义非法');
+                $this->outputError("The 'field' configured for 'column' in the '{$tableName}.php' file is illegal, specifically at the {$k}th element of the array.");
                 continue;
             }
             if (empty($columnStruct["type"])) {
-                $this->outputError($tableName . '表文件内column内第' . $k . '数组内type定义非法');
+                $this->outputError("The 'type' configured for 'column' in the '{$tableName}.php' file is illegal, specifically at the {$k}th element of the array.");
                 continue;
             }
             // todo 缺少主键字段、主键索引 的修改比对逻辑。

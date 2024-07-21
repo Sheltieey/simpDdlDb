@@ -16,6 +16,18 @@ class Common{
         "char","varchar","tinytext","text","mediumtext","longtext","enum","set"
     ];
 
+
+    public function setDbMapDirName($dirName)
+    {
+        $this->__dbMapDirectoryName = $dirName;
+    }
+
+    public function setDbMapDirPath($path)
+    {
+        $this->__local = $path;
+    }
+
+
     protected function onlyColumnName(string $columnType):string
     {
         $typeCheck = strstr($columnType,"(",true);

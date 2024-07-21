@@ -22,11 +22,11 @@ class ComparisonIndex extends Common
         if(empty($dbIndex)) return [];
         foreach ($mainIndexArray as $k => $indexStruct) {
             if (empty($indexStruct["index_name"])) {
-                $this->outputError($tableName . '表文件内index内第' . $k . '数组内index_name定义非法');
+                $this->outputError("The 'index_name' configured for 'index' in the '{$tableName}.php' file is illegal, specifically at the {$k}th element of the array.");
                 continue;
             }
             if (empty($indexStruct["field"])) {
-                $this->outputError($tableName . '表文件内index内第' . $k . '数组内field定义非法');
+                $this->outputError("The 'field' configured for 'index' in the '{$tableName}.php' file is illegal, specifically at the {$k}th element of the array.");
                 continue;
             }
 
@@ -65,12 +65,12 @@ class ComparisonIndex extends Common
         // print_r($dbIndexStruct2);
 
         if(count($mainIndexStruct2['field']) != count($dbIndexStruct2)){
-            echo "\n索引值数不一样\n";
+            // echo "\n索引值数不一样\n";
             $this->generaModifyIndexSql($tableName, $mainIndexStruct2);
         }else{
             for ($i=0; $i<count($mainIndexStruct2['field']); $i++){
                 if($mainIndexStruct2['field'][$i] !== $dbIndexStruct2[$i]['column_name']){
-                    echo "\n索引值内容不一样\n";
+                    // echo "\n索引值内容不一样\n";
                     $this->generaModifyIndexSql($tableName, $mainIndexStruct2);
                     break;
                 }
@@ -84,11 +84,11 @@ class ComparisonIndex extends Common
         }
 
         if($mainIndexStruct2['unique'] !== $dbIndexUnique){
-            echo "\n索引unique不一样\n";
+            // echo "\n索引unique不一样\n";
             $this->generaModifyIndexSql($tableName, $mainIndexStruct2);
         }
         if( strtolower($mainIndexStruct2['index_type']) != strtolower($mainIndexStruct2['index_type'])){
-            echo "\n索引index_type不一样\n";
+            // echo "\n索引index_type不一样\n";
             $this->generaModifyIndexSql($tableName, $mainIndexStruct2);
         }
     }

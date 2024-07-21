@@ -9,11 +9,7 @@ use sheltie\SimpleManageDb\lib\Common;
 
 final class SimpleManageDb extends Common
 {
-
-    private $_dbDsn;
-    private $_dbUser;
-    private $_dbPass;
-    private $_connect = NULL;
+    private $_connect;
 
     private static $_instance;
 
@@ -32,25 +28,37 @@ final class SimpleManageDb extends Common
         $this->_connect = $PDO;
     }
 
-    public function generateDbMapping($force = false)
+    public function run(string $mode,string $specifyDir = "",bool $force = false)
     {
 
-        if ($this->_connect === NULL) throw new PDOException("miss connect");
-
-        $generateObj = new GenerateDbMap($this->__dbMapDirectoryName);
-        $generateObj->generate($this->_connect,$force);
-
+        switch ($mode){
+            case 'generate':
+                $this->generateDbMapping();
+                break;
+            case 'update':
+                $this->updateTableStruct($specifyDir);
+                break;
+            default:
+                exit("node：need effective operational instructions");
+                break;
+        }
         $this->_connect = NULL;
+        exit("\nrun complete\n");
+
     }
 
-    public function updateTableStruct($specifyDir = "",$force = false)
+    private function generateDbMapping($force = false)
     {
-
         if ($this->_connect === NULL) throw new PDOException("miss connect");
+        $generateObj = new GenerateDbMap($this->__dbMapDirectoryName);
+        $generateObj->generate($this->_connect,$force);
+    }
 
+    private function updateTableStruct($specifyDir = "",$force = false)
+    {
+        if ($this->_connect === NULL) throw new PDOException("miss connect");
         $updateStructObj = new UpdateTableStruct($this->__dbMapDirectoryName);
         $updateStructObj->update($this->_connect,$specifyDir,$force);
-
     }
 
 

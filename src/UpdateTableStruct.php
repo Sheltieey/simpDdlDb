@@ -73,7 +73,7 @@ class UpdateTableStruct extends Common
         $this->preconditioning($con);
 
         if (empty($this->__readyUpdateTable) && empty($this->__readyCreateTable)) {
-            echo "\n 没有表需要更新\n";
+            echo "\nNo data tables available for update";
             return;
         }
 
@@ -205,10 +205,10 @@ class UpdateTableStruct extends Common
             // $fileCreatedTimestamp = filectime($filePath);
             $fileUpdatedTimestamp = filemtime($filePath);
             $fileActiveTimestamp = fileatime($filePath);
-            echo $filePath ."\n";
-            // // echo "创建时间：".date("Y-m-d H:i:s",$fileCreatedTimestamp)."\n";
-            echo "修改时间：".date("Y-m-d H:i:s",$fileUpdatedTimestamp)."  --- {$fileUpdatedTimestamp} \n";
-            echo "访问时间：".date("Y-m-d H:i:s",$fileActiveTimestamp)."  --- {$fileActiveTimestamp} \n";
+            // echo $filePath ."\n";
+            // // // echo "创建时间：".date("Y-m-d H:i:s",$fileCreatedTimestamp)."\n";
+            // echo "修改时间：".date("Y-m-d H:i:s",$fileUpdatedTimestamp)."  --- {$fileUpdatedTimestamp} \n";
+            // echo "访问时间：".date("Y-m-d H:i:s",$fileActiveTimestamp)."  --- {$fileActiveTimestamp} \n";
 
             if ($fileUpdatedTimestamp !== $fileActiveTimestamp) {
 
@@ -237,7 +237,7 @@ class UpdateTableStruct extends Common
                             'filePath' => $filePath,
                         ];
                     } else {
-                        $this->outputError($tableName . "配置内容无法识别或有其他异常：" . $PDOException->getMessage());
+                        $this->outputError($tableName . "exception：" . $PDOException->getMessage());
                     }
 
                 }
