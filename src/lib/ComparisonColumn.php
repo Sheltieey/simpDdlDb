@@ -76,7 +76,6 @@ class ComparisonColumn extends Common
         }else if($mainFieldStruct2['default'] !== $dbFieldStruct2['default']){
             $this->generaModifyFieldSql($tableName, $mainFieldStruct2);
         }
-
     }
 
     // 字段数据类型修改sql

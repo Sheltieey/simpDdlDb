@@ -8,10 +8,6 @@ use sheltie\SimpleManageDb\lib\Common;
 
 class GenerateDbMap extends Common
 {
-
-    private $__firstDirectory = [];
-    private $__secondDirectory = [];
-
     private $__writeStrReplace = [
         'search' => [
             0 => "array (",
@@ -190,39 +186,6 @@ class GenerateDbMap extends Common
                 break;
         }
     }
-
-    /**
-     * 创建目录
-     * @param $dirPath
-     * @return void
-     */
-    private function makeDirectory($dirPath):void
-    {
-        if(!is_dir($dirPath)){
-            if(!mkdir($dirPath,0777,true)) throw new RuntimeException('mkdir '.$this->__dbMapDirectoryName.' fail');
-        }
-    }
-
-    /**
-     * 解析表名
-     * @param $tableName
-     * @return string
-     */
-    private function analyzeTableName($tableName):string
-    {
-
-        $tableNameArray = explode('_',$tableName);
-        if(!isset($this->__firstDirectory[$tableNameArray[0]])) $this->makeDirectory('./'.$this->__dbMapDirectoryName.'/'.$tableNameArray[0].'/');
-        $this->__firstDirectory[$tableNameArray[0]] = true;
-
-        if(!isset($this->__secondDirectory[$tableNameArray[1]])) $this->makeDirectory('./'.$this->__dbMapDirectoryName.'/'.$tableNameArray[0].'/'.$tableNameArray[1].'/');
-        $this->__secondDirectory[$tableNameArray[1]] = true;
-
-        return './'.$this->__dbMapDirectoryName.'/'.$tableNameArray[0].'/'.$tableNameArray[1].'/'.$tableName . '.php';
-
-    }
-
-
 
 
 }

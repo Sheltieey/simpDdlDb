@@ -61,9 +61,6 @@ class ComparisonIndex extends Common
             }
         }
 
-        // print_r($mainIndexStruct2);
-        // print_r($dbIndexStruct2);
-
         if(count($mainIndexStruct2['field']) != count($dbIndexStruct2)){
             // echo "\n索引值数不一样\n";
             $this->generaModifyIndexSql($tableName, $mainIndexStruct2);
@@ -91,6 +88,7 @@ class ComparisonIndex extends Common
             // echo "\n索引index_type不一样\n";
             $this->generaModifyIndexSql($tableName, $mainIndexStruct2);
         }
+
     }
 
     /**

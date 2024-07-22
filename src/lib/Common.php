@@ -1,5 +1,7 @@
 <?php
 namespace sheltie\SimpleManageDb\lib;
+use \RuntimeException;
+
 class Common{
 
     protected $__local = "./";
@@ -20,6 +22,10 @@ class Common{
         "char","varchar","tinytext","text","mediumtext","longtext","enum","set"
     ];
 
+    protected $__noDiffTable = [];
+
+    protected $__firstDirectory = [];
+    protected $__secondDirectory = [];
 
     public function setDbMapDirName($dirName)
     {
@@ -113,6 +119,38 @@ class Common{
     protected function outputError($message)
     {
         echo "\n$message\n";
+    }
+
+
+    /**
+     * 解析表名
+     * @param $tableName
+     * @return string
+     */
+    protected function analyzeTableName($tableName):string
+    {
+
+        $tableNameArray = explode('_',$tableName);
+        if(!isset($this->__firstDirectory[$tableNameArray[0]])) $this->makeDirectory('./'.$this->__dbMapDirectoryName.'/'.$tableNameArray[0].'/');
+        $this->__firstDirectory[$tableNameArray[0]] = true;
+
+        if(!isset($this->__secondDirectory[$tableNameArray[1]])) $this->makeDirectory('./'.$this->__dbMapDirectoryName.'/'.$tableNameArray[0].'/'.$tableNameArray[1].'/');
+        $this->__secondDirectory[$tableNameArray[1]] = true;
+
+        return './'.$this->__dbMapDirectoryName.'/'.$tableNameArray[0].'/'.$tableNameArray[1].'/'.$tableName . '.php';
+
+    }
+
+    /**
+     * 创建目录
+     * @param $dirPath
+     * @return void
+     */
+    protected function makeDirectory($dirPath):void
+    {
+        if(!is_dir($dirPath)){
+            if(!mkdir($dirPath,0777,true)) throw new RuntimeException('mkdir '.$this->__dbMapDirectoryName.' fail');
+        }
     }
 
 }

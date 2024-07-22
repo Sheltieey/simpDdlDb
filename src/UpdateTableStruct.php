@@ -111,12 +111,15 @@ class UpdateTableStruct extends Common
         }
 
         // 重新生成dbMap映射配置文件
-        foreach ($this->__reGenerateTable as $tableName){
-            $this->__generateDbMap->generateOfTable($con,$tableName);
+        if(!empty($this->__reGenerateTable)){
+            foreach ($this->__reGenerateTable as $tableName){
+                $this->__generateDbMap->generateOfTable($con,$tableName);
+            }
         }
 
-    }
+        array_map("touch", $this->__noDiffTable);
 
+    }
 
     private function executeSql($con,$sql,$tableName)
     {
@@ -151,6 +154,14 @@ class UpdateTableStruct extends Common
             $this->__readyExecuteColumnSql = $comparisonColumnObj->execComparisonColumns($info["tableName"], $fileTableColumnsStruct, $dbTableStruct);
             $this->__readyExecuteIndexSql = $comparisonIndexObj->execComparisonIndexes($info["tableName"], $fileTableIndexesStruct, $dbIndexesStruct);
         }
+
+        // 无变更表找出来
+        foreach ($this->__readyUpdateTable as $info) {
+            if(!isset($this->__readyExecuteColumnSql[$info["tableName"]]) && !isset($this->__readyExecuteIndexSql[$info["tableName"]])){
+                $this->__noDiffTable[$info["tableName"]] = $info["filePath"];
+            }
+        }
+
     }
 
     private function check($specifyDir = "")
@@ -199,10 +210,13 @@ class UpdateTableStruct extends Common
             $fileUpdatedTimestamp = filemtime($filePath);
             $fileActiveTimestamp = fileatime($filePath);
 
-            if ($fileUpdatedTimestamp !== $fileActiveTimestamp) {
-                echo $filePath ."\n";
-                echo "修改时间：".date("Y-m-d H:i:s",$fileUpdatedTimestamp)."  --- {$fileUpdatedTimestamp} \n";
-                echo "访问时间：".date("Y-m-d H:i:s",$fileActiveTimestamp)."  --- {$fileActiveTimestamp} \n";
+            // echo $filePath ."\n";
+            // echo "修改时间：".date("Y-m-d H:i:s",$fileUpdatedTimestamp)."  --- {$fileUpdatedTimestamp} \n";
+            // echo "访问时间：".date("Y-m-d H:i:s",$fileActiveTimestamp)."  --- {$fileActiveTimestamp} \n";
+
+            $diffValue = abs($fileActiveTimestamp - $fileUpdatedTimestamp);
+
+            if ($diffValue>1) {
 
                 $tableName = $this->getTableNameByFilePath($filePath);
 
