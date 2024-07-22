@@ -3,7 +3,7 @@
   "description": "Make it easy to manage data tables",
   "minimum-stability": "stable",
   "license": "Apache-2.0",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "type": "library",
   "authors": [
     {
