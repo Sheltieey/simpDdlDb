@@ -69,7 +69,7 @@ class ComparisonColumn extends Common
 
         if($mainFieldStruct2['type'] !== $dbFieldStruct2['type']){
             $this->generaModifyFieldSql($tableName, $mainFieldStruct2);
-        }else if($mainFieldStruct2['comment'] !== $dbFieldStruct2['comment']){
+        }else if($mainFieldStruct2['comment'] != $dbFieldStruct2['comment']){
             $this->generaModifyFieldSql($tableName, $mainFieldStruct2);
         }else if (strtolower($mainFieldStruct2['null']) !== strtolower($dbFieldStruct2['null'])){
             $this->generaModifyFieldSql($tableName, $mainFieldStruct2);

@@ -83,55 +83,29 @@ class UpdateTableStruct extends Common
         }
 
         if (!empty($this->__readyCreateTable)) {
-            $createTableObj = new CreateTable($this->__readyCreateTable);
-            $createTableObj->generaCreateTableSql();
+            $createTableObj = new CreateTable();
+            $createTableObj->generaCreateTableSql($this->__readyCreateTable);
         }
-
-        // print_r($this->__readyCreateTableSql);
-        // print_r($this->__readyExecuteColumnSql);
-        // print_r($this->__readyExecuteIndexSql);
-        // die;
 
         // 开始运行
         if(!empty($this->__readyCreateTableSql)){
             foreach ($this->__readyCreateTableSql as $tableName=>$sqlMore){
                 foreach ($sqlMore as $sql){
-                    try {
-                        echo "\n$sql\n";
-                        $con->exec($sql);
-                        echo "exec complete\n";
-                        $this->__reGenerateTable[] = $tableName;
-                    }catch (\PDOException $exception){
-                        echo "exec fail : ".$exception->getMessage()."\n";
-                    }
+                    $this->executeSql($con,$sql,$tableName);
                 }
             }
         }
         if(!empty($this->__readyExecuteColumnSql)){
             foreach ($this->__readyExecuteColumnSql as $tableName=>$sqlMore){
                 foreach ($sqlMore as $sql){
-                    try {
-                        echo "\n$sql\n";
-                        $con->exec($sql);
-                        echo "exec complete\n";
-                        $this->__reGenerateTable[] = $tableName;
-                    }catch (\PDOException $exception){
-                        echo "exec fail : ".$exception->getMessage()."\n";
-                    }
+                    $this->executeSql($con,$sql,$tableName);
                 }
             }
         }
         if(!empty($this->__readyExecuteIndexSql)){
             foreach ($this->__readyExecuteIndexSql as $tableName=>$sqlMore){
                 foreach ($sqlMore as $sql){
-                    try {
-                        echo "\nexec sql : $sql\n";
-                        $con->exec($sql);
-                        echo "exec complete\n";
-                        $this->__reGenerateTable[] = $tableName;
-                    }catch (\PDOException $exception){
-                        echo "exec fail : ".$exception->getMessage()."\n";
-                    }
+                    $this->executeSql($con,$sql,$tableName);
                 }
             }
         }
@@ -141,6 +115,24 @@ class UpdateTableStruct extends Common
             $this->__generateDbMap->generateOfTable($con,$tableName);
         }
 
+    }
+
+
+    private function executeSql($con,$sql,$tableName)
+    {
+        try {
+            echo "\nExecute an SQl :$sql\n";
+            $re = $con->exec($sql);
+            if($re === false){
+                $errorInfoArray = $con->errorInfo();
+                throw new PDOException($errorInfoArray[1].' - '.$errorInfoArray[2]);
+            }else{
+                echo "Execute complete\n";
+            }
+            $this->__reGenerateTable[] = $tableName;
+        }catch (\PDOException $exception){
+            echo "Execution failed : ".$exception->getMessage(). $exception->errorInfo ."\n";
+        }
     }
 
     private function comparisonTablesFieldStruct()
@@ -182,7 +174,8 @@ class UpdateTableStruct extends Common
         $handle = opendir($dirName);
         while (($file = readdir($handle)) !== false) {
             //排除掉当前目录和上一个目录
-            if ($file == "." || $file == "..") continue;
+            // if ($file == "." || $file == "..") continue;
+            if (in_array($file,$this->__ignoreDir)) continue;
             $file = $dirName . DIRECTORY_SEPARATOR . $file;
             //如果是文件就打印出来，否则递归调用
             if (is_file($file)) {
@@ -205,12 +198,11 @@ class UpdateTableStruct extends Common
             // $fileCreatedTimestamp = filectime($filePath);
             $fileUpdatedTimestamp = filemtime($filePath);
             $fileActiveTimestamp = fileatime($filePath);
-            // echo $filePath ."\n";
-            // // // echo "创建时间：".date("Y-m-d H:i:s",$fileCreatedTimestamp)."\n";
-            // echo "修改时间：".date("Y-m-d H:i:s",$fileUpdatedTimestamp)."  --- {$fileUpdatedTimestamp} \n";
-            // echo "访问时间：".date("Y-m-d H:i:s",$fileActiveTimestamp)."  --- {$fileActiveTimestamp} \n";
 
             if ($fileUpdatedTimestamp !== $fileActiveTimestamp) {
+                echo $filePath ."\n";
+                echo "修改时间：".date("Y-m-d H:i:s",$fileUpdatedTimestamp)."  --- {$fileUpdatedTimestamp} \n";
+                echo "访问时间：".date("Y-m-d H:i:s",$fileActiveTimestamp)."  --- {$fileActiveTimestamp} \n";
 
                 $tableName = $this->getTableNameByFilePath($filePath);
 

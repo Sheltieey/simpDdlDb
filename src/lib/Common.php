@@ -6,6 +6,10 @@ class Common{
 
     protected $__dbMapDirectoryName = 'dbMap';
 
+    protected $__ignoreDir = [
+        ".","..",".DS_Store"
+    ];
+
     protected $__intTypes = [
         "tinyint","smallint","int","integer","bigint"
     ];
