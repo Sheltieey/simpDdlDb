@@ -5,7 +5,7 @@
 我开发这个工具是为了解决PHP语言小团队开发过程中，对数据表DDL操作过多细碎又在发布的时候容易忘记的情况。比如将半个月前测试完的分支领导吩咐今天发布到生产的时候会忘了具体是哪个字段的变更、加了索引、建了新表等，这很不效率。此工具为解决这个痛点而诞生。在使用工具中如遇到任何bug或者体验优化还[请联系我](mailto:sheltie2024@163.com)。  
 #### <u>注意：本工具不支持删表、删索引、删字段等任何删除操作。</u>
 
-## 简单一条命令
+## 一条命令更新表结构
 #### 自定义的命令文件位置运行如下命令，即同步数据表字段的DDL操作到当前环境的数据库
 ```bash
 php ddl.php update tie/user
@@ -121,10 +121,10 @@ php ddl.php update df/user
 ```bash
 php ddl.php update
 ```
-会看到命令窗口显示
+会看到命令窗口显示（例）
 ```bash
-ALTER TABLE `df_user_sales` MODIFY uid varchar(255) NOT NULL DEFAULT '' COMMENT '字符串';
-exec complete.
+Execute an SQl :ALTER TABLE `df_user_sales` ADD COLUMN open_switch int(8)  DEFAULT 0 COMMENT '开关' AFTER `page_value`;
+Execute complete
 ```
 
 
